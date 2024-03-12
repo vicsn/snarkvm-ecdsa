@@ -1,5 +1,9 @@
 use ecdsa::signature::DigestVerifier;
+use ecdsa::hazmat::bits2field;
+
+//use ecdsa::SigningKey;
 use k256::ecdsa::{Signature, SigningKey, VerifyingKey};
+use k256::elliptic_curve::Field;
 use rand::rngs::OsRng;
 use rand::{thread_rng, RngCore};
 use sha3::{Digest, Keccak256};
@@ -33,7 +37,8 @@ pub fn sample_msg(size: usize) -> Vec<u8> {
     let rng = &mut OsRng::default();
     let mut res = Vec::with_capacity(size);
     for _ in 0..size {
-        res.push(u8::rand(rng));
+        //res.push(u8::rand(rng));
+        res.push(0);
     }
     res
 }
@@ -66,11 +71,13 @@ pub fn generate_signatures(msg_len: usize, num: usize) -> Vec<(VerifyingKey, Vec
 
         // generate msg_len random bytes
         let mut msg = vec![0u8; msg_len];
-        thread_rng().fill_bytes(&mut msg);
+        //thread_rng().fill_bytes(&mut msg);
 
         // hash msg
         let mut hasher = Keccak256::new();
         hasher.update(&msg);
+
+        //println!("keccark hash: {:?}", &hasher.clone().finalize());
 
         // generate signature
         let (signature, _) = secret_key.sign_digest_recoverable(hasher.clone()).unwrap();

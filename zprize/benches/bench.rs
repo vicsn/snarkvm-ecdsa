@@ -23,6 +23,7 @@ fn criterion_benchmark(c: &mut Criterion) {
     // setup
     let urs = zprize::api::setup(1000, 1000, 1000);
 
+
     // we generate 50 tuples for each bench
     // tuple = (public key, message, signature)
     let num = 50;
@@ -51,24 +52,47 @@ fn criterion_benchmark(c: &mut Criterion) {
     // as long as proofs verify.
     //
 
+    let max_concurrency = match std::env::var("MAX_CON") {
+        Ok(num) => match num.parse::<usize>() {
+            Ok(num) => num,
+            Err(e) => {
+                println!("Parse max concurrency error {:?}, use default 10", e);
+                10usize
+            }
+        },
+        Err(e) => {
+            10usize
+        }
+    };
+
+    let mut idx = 0;
     group.bench_function("small message", |b| {
         b.iter(|| {
+            println!("==============   small message #{idx}  ===============");
             // prove all tuples
-            zprize::prove_and_verify(&urs, &small_pk, &small_vk, black_box(&small_tuples));
+            zprize::prove_and_verify(&urs, &small_pk, &small_vk, black_box(&small_tuples), max_concurrency);
+            idx += 1;
         })
     });
 
+    let mut idx = 0;
     group.bench_function("medium message", |b| {
         b.iter(|| {
+            println!("==============   medium message #{idx}  ===============");
             // prove all tuples
-            zprize::prove_and_verify(&urs, &medium_pk, &medium_vk, black_box(&medium_tuples));
+            zprize::prove_and_verify(&urs, &medium_pk, &medium_vk, black_box(&medium_tuples), max_concurrency);
+            idx += 1;
         })
     });
 
+    let mut idx = 0;
     group.bench_function("large message", |b| {
         b.iter(|| {
+         println!("==============   large message #{idx}  ===============");
             // prove all tuples
-            zprize::prove_and_verify(&urs, &large_pk, &large_vk, black_box(&large_tuples));
+            zprize::prove_and_verify(&urs, &large_pk, &large_vk, black_box(&large_tuples), max_concurrency);
+           idx += 1;
+
         })
     });
 }

@@ -4,24 +4,39 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-snarkvm-algorithms = { git = "https://github.com/AleoHQ/snarkVM", branch = "zprize_2023" }
-snarkvm-circuit = { git = "https://github.com/AleoHQ/snarkVM", branch = "zprize_2023" }
-snarkvm-console = { git = "https://github.com/AleoHQ/snarkVM", branch = "zprize_2023", features = [
+snarkvm-algorithms = { path = "../../Trapdoortech_zprize-varuna-snarkVM/algorithms" }
+snarkvm-circuit = {  path = "../../Trapdoortech_zprize-varuna-snarkVM/circuit" }
+snarkvm-console = { path = "../../Trapdoortech_zprize-varuna-snarkVM/console", features = [
     "types",
 ] }
-snarkvm-curves = { git = "https://github.com/AleoHQ/snarkVM", branch = "zprize_2023" }
-snarkvm-circuit-environment = { git = "https://github.com/AleoHQ/snarkVM", branch = "zprize_2023" }
-snarkvm-console-network = { git = "https://github.com/AleoHQ/snarkVM", branch = "zprize_2023" }
-snarkvm-utilities = { git = "https://github.com/AleoHQ/snarkVM", branch = "zprize_2023" }
+snarkvm-curves = { path = "../../Trapdoortech_zprize-varuna-snarkVM/curves" }
+snarkvm-circuit-environment = { path = "../../Trapdoortech_zprize-varuna-snarkVM/circuit/environment" }
+snarkvm-console-network = { path = "../../Trapdoortech_zprize-varuna-snarkVM/console/network" }
+snarkvm-utilities = { path = "../../Trapdoortech_zprize-varuna-snarkVM/utilities" }
 
 rand = "0.8.5"
 k256 = { version = "0.13", features = ["ecdsa"] }
 ecdsa = { version = "0.16", features = ["signing", "verifying"] }
 sha3 = "0.10"
+num-bigint = { version = "0.4", features = ["rand"] }
+num-integer = {version = "0.1"}
+log = "0.4"
+rayon = "1.8"
+rust-crypto = "^0.2"
+memory-stats = "1.0.0"
+
+crossbeam = "0.8.4"
+
+[dependencies.lazy_static]
+version = "1.4"
 
 [dev-dependencies]
 criterion = { version = "0.4", features = ["html_reports"] }
+env_logger = "0.10.0"
 
 [[bench]]
 name = "bench"
 harness = false
+
+[target.'cfg(not(target_env = "msvc"))'.dependencies]
+tikv-jemallocator = { version = "0.5.4", features = ["profiling", "unprefixed_malloc_on_supported_platforms"] }
