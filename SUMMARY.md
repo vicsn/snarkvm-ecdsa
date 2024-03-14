@@ -4,8 +4,8 @@
 You can run the benchmark with the following command:
 
 ```
-git clone Trapdoortech_zprize-ecdsa-varuna.git
-git clone Trapdoortech_zprize-varuna-snarkVM.git
+git clone https://github.com/Trapdoor-Tech/Trapdoortech_zprize-ecdsa-varuna.git
+git clone Thttps://github.com/Trapdoor-Tech/rapdoortech_zprize-varuna-snarkVM.git
 cd Trapdoortech_zprize-ecdsa-varuna/zprize/
 cargo bench -- --nocapture
 ```
