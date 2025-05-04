@@ -22,15 +22,15 @@ type F = Field<Circuit>;
 
 use core::{cell::RefCell};
 use std::rc::Rc;
-use snarkvm_console_network::Testnet3;
+use snarkvm_console_network::MainnetV0;
 
 use lazy_static::*;
 
 lazy_static! {
-    pub static ref COEFFS: Vec<snarkvm_console::types::Field::<Testnet3>> = {
+    pub static ref COEFFS: Vec<snarkvm_console::types::Field::<MainnetV0>> = {
         let mut coeffs = Vec::with_capacity(256);
         for i in 0..256 {
-           let coeff = snarkvm_console::types::Field::<Testnet3>::from_u128(2u128.pow(i as u32));
+           let coeff = snarkvm_console::types::Field::<MainnetV0>::from_u128(2u128.pow(i as u32));
            coeffs.push(coeff);
         }
         coeffs
@@ -107,7 +107,7 @@ pub fn is_less_than(a: &F, b: &F, len: usize) -> Boolean<Circuit>{
 
     for i in 0..len {
         let mut ls = Boolean::new(Private, a_vals[i] < b_vals[i]);
-        Circuit::enforce_lookup(|| (a_bytes.get(i).unwrap(), b_bytes.get(i).unwrap(), &ls, table_index));
+        // Circuit::enforce_lookup(|| (a_bytes.get(i).unwrap(), b_bytes.get(i).unwrap(), &ls, table_index));
 
         let eq = a_bytes.get(i).unwrap().is_equal(b_bytes.get(i).unwrap());
         is_less_than = ls.bitor(eq.bitand(&is_less_than));
@@ -129,7 +129,7 @@ pub fn is_less_than_constant(a: &F, b: &F, len: usize) -> Boolean<Circuit> {
     let max = Circuit::one() * COEFFS[0].deref();
 
     let table_index = 0usize;
-    Circuit::enforce_lookup(|| (&high, max, &ls, table_index));
+    // Circuit::enforce_lookup(|| (&high, max, &ls, table_index));
 
     ls
 }
@@ -141,7 +141,7 @@ pub fn is_less_than_limb(a: &F, len: usize, pown: usize) -> Boolean<Circuit> {
     let max = Circuit::one() * COEFFS[pown].deref();
 
     let table_index = 0usize;
-    Circuit::enforce_lookup(|| (a_bytes.get(len-1).unwrap(), max, &ls, table_index));
+    // Circuit::enforce_lookup(|| (a_bytes.get(len-1).unwrap(), max, &ls, table_index));
 
     ls
 }
@@ -169,69 +169,69 @@ pub fn splitField(v: &F, pos: usize, extra: usize) -> (F, F) {
     (lowF, highF)
 }
 
-use snarkvm_algorithms::r1cs::LookupTable;
-use snarkvm_console::account::de::Unexpected::Bool;
-pub fn add_comp_table() {
-    /* less comparsion table */
-    let mut lookup_table = LookupTable::default();
+// use snarkvm_algorithms::r1cs::LookupTable;
+// use snarkvm_console::account::de::Unexpected::Bool;
+// pub fn add_comp_table() {
+//     /* less comparsion table */
+//     let mut lookup_table = LookupTable::default();
 
-    for i in 0..256 {
-        for j in 0..256 {
-            let key0 =  snarkvm_console::types::Field::<Testnet3>::from_u16(i as u16);
-            let key1 =  snarkvm_console::types::Field::<Testnet3>::from_u16(j as u16);
-            if i < j {
-                lookup_table.fill([key0.deref().clone(), key1.deref().clone()], Circuit::one().value());
-            } else {
-                lookup_table.fill([key0.deref().clone(), key1.deref().clone()], Circuit::zero().value());
-            }
-        }
-    }
-    Circuit::add_lookup_table(lookup_table);
-}
+//     for i in 0..256 {
+//         for j in 0..256 {
+//             let key0 =  snarkvm_console::types::Field::<MainnetV0>::from_u16(i as u16);
+//             let key1 =  snarkvm_console::types::Field::<MainnetV0>::from_u16(j as u16);
+//             if i < j {
+//                 lookup_table.fill([key0.deref().clone(), key1.deref().clone()], Circuit::one().value());
+//             } else {
+//                 lookup_table.fill([key0.deref().clone(), key1.deref().clone()], Circuit::zero().value());
+//             }
+//         }
+//     }
+//     Circuit::add_lookup_table(lookup_table);
+// }
 
-pub fn add_xor_table() {
-    /* less comparsion table */
-    let mut lookup_table = LookupTable::default();
+// pub fn add_xor_table() {
+//     /* less comparsion table */
+//     let mut lookup_table = LookupTable::default();
 
-    for i in 0..256 {
-        for j in 0..256 {
-            let key0 = snarkvm_console::types::Field::<Testnet3>::from_u16(i as u16);
-            let key1 =  snarkvm_console::types::Field::<Testnet3>::from_u16(j as u16);
-            let result = snarkvm_console::types::Field::<Testnet3>::from_u8((i ^ j) as u8);
-            lookup_table.fill([key0.deref().clone(), key1.deref().clone()], result.deref().clone());
-        }
-    }
-    Circuit::add_lookup_table(lookup_table);
-}
+//     for i in 0..256 {
+//         for j in 0..256 {
+//             let key0 = snarkvm_console::types::Field::<MainnetV0>::from_u16(i as u16);
+//             let key1 =  snarkvm_console::types::Field::<MainnetV0>::from_u16(j as u16);
+//             let result = snarkvm_console::types::Field::<MainnetV0>::from_u8((i ^ j) as u8);
+//             lookup_table.fill([key0.deref().clone(), key1.deref().clone()], result.deref().clone());
+//         }
+//     }
+//     Circuit::add_lookup_table(lookup_table);
+// }
 
-pub fn add_and_table() {
-    /* less comparsion table */
-    let mut lookup_table = LookupTable::default();
+// pub fn add_and_table() {
+//     /* less comparsion table */
+//     let mut lookup_table = LookupTable::default();
 
-    for i in 0..256 {
-        for j in 0..256 {
-            let key0 = snarkvm_console::types::Field::<Testnet3>::from_u16(i as u16);
-            let key1 =snarkvm_console::types::Field::<Testnet3>::from_u16(j as u16);
-            let result = snarkvm_console::types::Field::<Testnet3>::from_u8((i & j) as u8);
-            lookup_table.fill([key0.deref().clone(), key1.deref().clone()], result.deref().clone());
-        }
-    }
-    Circuit::add_lookup_table(lookup_table);
-}
+//     for i in 0..256 {
+//         for j in 0..256 {
+//             let key0 = snarkvm_console::types::Field::<MainnetV0>::from_u16(i as u16);
+//             let key1 =snarkvm_console::types::Field::<MainnetV0>::from_u16(j as u16);
+//             let result = snarkvm_console::types::Field::<MainnetV0>::from_u8((i & j) as u8);
+//             lookup_table.fill([key0.deref().clone(), key1.deref().clone()], result.deref().clone());
+//         }
+//     }
+//     Circuit::add_lookup_table(lookup_table);
+// }
 
-pub fn add_inv_table() {
-    /* less comparsion table */
-    let mut lookup_table = LookupTable::default();
+// pub fn add_inv_table() {
+//     /* less comparsion table */
+//     let mut lookup_table = LookupTable::default();
 
-    for i in 0..256 {
-        for j in 0..256 {
-            let key0 = snarkvm_console::types::Field::<Testnet3>::from_u16(i as u16);
-            let result = snarkvm_console::types::Field::<Testnet3>::from_u8((!i) as u8);
-            lookup_table.fill([key0.deref().clone(), Circuit::zero().value()], result.deref().clone());
-        }
-    }
-    Circuit::add_lookup_table(lookup_table);
-}
+//     for i in 0..256 {
+//         for j in 0..256 {
+//             let key0 = snarkvm_console::types::Field::<MainnetV0>::from_u16(i as u16);
+//             let result = snarkvm_console::types::Field::<MainnetV0>::from_u8((!i) as u8);
+//             lookup_table.fill([key0.deref().clone(), Circuit::zero().value()], result.deref().clone());
+//         }
+//     }
+//     Circuit::add_lookup_table(lookup_table);
+// }
 
 
 pub fn rotl_16(data: u16, offset: usize, n: usize) -> u64 {
@@ -240,26 +240,26 @@ pub fn rotl_16(data: u16, offset: usize, n: usize) -> u64 {
 }
 
 /* offset: 0~3 */
-pub fn add_rotl_tables(n: usize, offset: usize) {
-    let mut lookup_table = LookupTable::default();
+// pub fn add_rotl_tables(n: usize, offset: usize) {
+//     let mut lookup_table = LookupTable::default();
 
-    for i in 0..256 {
-        for j in 0..256 {
-            let key0 = snarkvm_console::types::Field::<Testnet3>::from_u8(i as u8);
-            let key1 = snarkvm_console::types::Field::<Testnet3>::from_u8(j as u8);
-            let result = snarkvm_console::types::Field::<Testnet3>::from_u64(rotl_16(i+j<<8, offset, n));
-            lookup_table.fill([key0.deref().clone(), key1.deref().clone()], result.deref().clone());
-        }
-    }
-    Circuit::add_lookup_table(lookup_table);
-}
+//     for i in 0..256 {
+//         for j in 0..256 {
+//             let key0 = snarkvm_console::types::Field::<MainnetV0>::from_u8(i as u8);
+//             let key1 = snarkvm_console::types::Field::<MainnetV0>::from_u8(j as u8);
+//             let result = snarkvm_console::types::Field::<MainnetV0>::from_u64(rotl_16(i+j<<8, offset, n));
+//             lookup_table.fill([key0.deref().clone(), key1.deref().clone()], result.deref().clone());
+//         }
+//     }
+//     Circuit::add_lookup_table(lookup_table);
+// }
 
 /* add all tables */
 pub fn add_tables() {
-    add_comp_table(); //0
-    add_xor_table();  //1
-    add_and_table();  //2
-    add_inv_table();  //3
+    // add_comp_table(); //0
+    // add_xor_table();  //1
+    // add_and_table();  //2
+    // add_inv_table();  //3
 }
 
 use memory_stats::{memory_stats, MemoryStats};

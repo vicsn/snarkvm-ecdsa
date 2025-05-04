@@ -16,7 +16,7 @@ use rand::rngs::OsRng;
 use snarkvm_algorithms::{
     crypto_hash::PoseidonSponge,
     polycommit::kzg10::UniversalParams,
-    snark::varuna::{self, AHPForR1CS, CircuitProvingKey, CircuitVerifyingKey, VarunaHidingMode},
+    snark::varuna::{self, AHPForR1CS, CircuitProvingKey, CircuitVerifyingKey, VarunaHidingMode, VarunaVersion},
     traits::SNARK,
 };
 use snarkvm_circuit::{
@@ -24,7 +24,7 @@ use snarkvm_circuit::{
     Environment as _,
 };
 use snarkvm_circuit_environment::{Eject, Inject, Mode};
-use snarkvm_console::network::Testnet3 as Network;
+use snarkvm_console::network::MainnetV0 as Network;
 use snarkvm_console_network::Network as _;
 use snarkvm_curves::bls12_377::{Bls12_377, Fq, Fr};
 use std::collections::BTreeMap;
@@ -122,7 +122,7 @@ pub fn prove(
     tuples: Tuples,
 ) -> varuna::Proof<Bls12_377> {
     // Prepare the instances.
-    let mut instances = Vec::new();
+    let mut instances = BTreeMap::new();
 
     let mut assignments = crossbeam::thread::scope(|s| -> Vec<Assignment<Fr>> {
         let mut assignments = Vec::new();
@@ -149,13 +149,14 @@ pub fn prove(
     })
     .unwrap();
 
-    instances.push((pk, &assignments[..]));
+    instances.insert(pk, &assignments[..]);
 
     // Compute the proof.
     let rng = &mut OsRng::default();
     let universal_prover = urs.to_universal_prover().unwrap();
     let fiat_shamir = Network::varuna_fs_parameters();
-    let proof = VarunaInst::prove_batch(&universal_prover, fiat_shamir, &instances, rng).unwrap();
+    let v = VarunaVersion::V2;
+    let proof = VarunaInst::prove_batch(&universal_prover, fiat_shamir, v, &instances, rng).unwrap();
 
     proof
 }
@@ -183,8 +184,9 @@ pub fn verify_proof(
 
         // prepare input
         let mut inputs_i = vec![];
-        for (_, input) in assignment.public_inputs() {
-            inputs_i.push(*input);
+        use lazy_static::__Deref;
+        for input in assignment.public_inputs().deref() { // TODO: why does contain circuit instead of console field elements?
+            inputs_i.push(input.value());
         }
         inputs.push(inputs_i);
     }
@@ -196,7 +198,8 @@ pub fn verify_proof(
     let universal_verifier = urs.to_universal_verifier().unwrap();
 
     // Note: same comment here, verify_batch could verify several proofs instead of one ;)
+    let v = VarunaVersion::V2;
     let result =
-        VarunaInst::verify_batch(&universal_verifier, fiat_shamir, &keys_to_inputs, proof).unwrap();
+        VarunaInst::verify_batch(&universal_verifier, fiat_shamir, v, &keys_to_inputs, proof).unwrap();
     assert!(result);
 }

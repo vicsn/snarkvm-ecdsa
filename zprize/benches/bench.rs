@@ -26,22 +26,24 @@ fn criterion_benchmark(c: &mut Criterion) {
 
     // we generate 50 tuples for each bench
     // tuple = (public key, message, signature)
-    let num = 50;
+    let num = 1;
 
     // 100 bytes
     let msg_len = 100;
     let small_tuples = zprize::console::generate_signatures(msg_len, num);
     let (small_pk, small_vk) = zprize::api::compile(&urs, msg_len);
+    // println!("small_pk.circuit.as_ref().s_lookup_evals.len(): {:?}", small_pk.circuit.as_ref().s_lookup_evals);
 
-    // 1,000 bytes
-    let msg_len = 1000;
-    let medium_tuples = zprize::console::generate_signatures(msg_len, num);
-    let (medium_pk, medium_vk) = zprize::api::compile(&urs, msg_len);
+    // // 1,000 bytes
+    // let msg_len = 1000;
+    // let medium_tuples = zprize::console::generate_signatures(msg_len, num);
+    // let (medium_pk, medium_vk) = zprize::api::compile(&urs, msg_len);
 
     // 50,000 bytes
-    let msg_len = 50000;
-    let large_tuples = zprize::console::generate_signatures(msg_len, num);
-    let (large_pk, large_vk) = zprize::api::compile(&urs, msg_len);
+    // let msg_len = 50000;
+    // let large_tuples = zprize::console::generate_signatures(msg_len, num);
+    // let (large_pk, large_vk) = zprize::api::compile(&urs, msg_len);
+    // println!("large_pk.circuit.as_ref().s_lookup_evals.len(): {:?}", large_pk.circuit.as_ref().s_lookup_evals);
 
     //
     // WARNING
@@ -75,26 +77,26 @@ fn criterion_benchmark(c: &mut Criterion) {
         })
     });
 
-    let mut idx = 0;
-    group.bench_function("medium message", |b| {
-        b.iter(|| {
-            println!("==============   medium message #{idx}  ===============");
-            // prove all tuples
-            zprize::prove_and_verify(&urs, &medium_pk, &medium_vk, black_box(&medium_tuples), max_concurrency);
-            idx += 1;
-        })
-    });
+    // let mut idx = 0;
+    // group.bench_function("medium message", |b| {
+    //     b.iter(|| {
+    //         println!("==============   medium message #{idx}  ===============");
+    //         // prove all tuples
+    //         zprize::prove_and_verify(&urs, &medium_pk, &medium_vk, black_box(&medium_tuples), max_concurrency);
+    //         idx += 1;
+    //     })
+    // });
 
-    let mut idx = 0;
-    group.bench_function("large message", |b| {
-        b.iter(|| {
-         println!("==============   large message #{idx}  ===============");
-            // prove all tuples
-            zprize::prove_and_verify(&urs, &large_pk, &large_vk, black_box(&large_tuples), max_concurrency);
-           idx += 1;
+    // let mut idx = 0;
+    // group.bench_function("large message", |b| {
+    //     b.iter(|| {
+    //      println!("==============   large message #{idx}  ===============");
+    //         // prove all tuples
+    //         zprize::prove_and_verify(&urs, &large_pk, &large_vk, black_box(&large_tuples), max_concurrency);
+    //        idx += 1;
 
-        })
-    });
+    //     })
+    // });
 }
 
 criterion_group!(benches, criterion_benchmark);

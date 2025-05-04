@@ -1,7 +1,7 @@
 use std::borrow::Borrow;
 use std::ops::{Add, BitAnd, BitOr, Deref, Div, Mul, Not, Sub};
 use snarkvm_circuit_environment::{prelude::PrimeField, Eject, Environment, Inject, Mode, Compare, Zero, Equal, Assignment, Circuit, One, ToBits};
-use snarkvm_console_network::{prelude::Itertools, SizeInBytes, Testnet3};
+use snarkvm_console_network::{prelude::Itertools, SizeInBytes, MainnetV0};
 use snarkvm_utilities::biginteger::BigInteger;
 
 use snarkvm_circuit::{Boolean, Circuit as Env, Field};
@@ -252,9 +252,9 @@ impl EmulatedField {
 
         let mut limbs = Vec::with_capacity(3);
         if mode == Constant {
-            limbs.push(F::from(Env::one() * snarkvm_console::types::Field::<Testnet3>::from_u128(data0.to_u128().unwrap()).deref()));
-            limbs.push(F::from(Env::one() * snarkvm_console::types::Field::<Testnet3>::from_u128(data1.to_u128().unwrap()).deref()));
-            limbs.push(F::from(Env::one() * snarkvm_console::types::Field::<Testnet3>::from_u128(data2.to_u128().unwrap()).deref()));
+            limbs.push(F::from(Env::one() * snarkvm_console::types::Field::<MainnetV0>::from_u128(data0.to_u128().unwrap()).deref()));
+            limbs.push(F::from(Env::one() * snarkvm_console::types::Field::<MainnetV0>::from_u128(data1.to_u128().unwrap()).deref()));
+            limbs.push(F::from(Env::one() * snarkvm_console::types::Field::<MainnetV0>::from_u128(data2.to_u128().unwrap()).deref()));
         } else {
             limbs.push(F::new(mode, snarkvm_console::types::Field::from_u128(data0.to_u128().unwrap())));
             limbs.push(F::new(mode, snarkvm_console::types::Field::from_u128(data1.to_u128().unwrap())));

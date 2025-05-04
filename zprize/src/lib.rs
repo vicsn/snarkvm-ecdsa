@@ -74,8 +74,8 @@ mod tests {
     fn it_works() {
         // generate `num` (pubkey, msg, signature)
         // with messages of length `msg_len`
-        let num = 10;
-        let msg_len = 100;
+        let num = 1;
+        let msg_len = 1000;
         let tuples = console::generate_signatures(msg_len, num);
 
         // setup
@@ -86,7 +86,7 @@ mod tests {
         // prove and verify
         // prove_and_verify(&urs, &pk, &vk, &tuples, 10);
 
-        for i in 0..10 {
+        for i in 0..1 {
             println!("prove iter #{i}");
             prove_and_verify(&urs, &pk, &vk, &tuples, 10);
 

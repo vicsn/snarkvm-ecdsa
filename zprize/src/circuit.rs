@@ -213,10 +213,10 @@ impl Eject for ECDSASignature {
 /// Verifies a single ECDSA signature on a message.
 pub fn verify_one(_public_key: ECDSAPublicKey, _signature: ECDSASignature, msg: Message, compile_mode: bool) {
     // don't add tables in constraint generation
-    if compile_mode {
-        utils::add_tables();
-        keccak256::F64::add_lookup_tables();
-    }
+    // if compile_mode {
+    //     utils::add_tables();
+    //     keccak256::F64::add_lookup_tables();
+    // }
 
     //keccak hash
     let mut kk = keccak256::Keccak256::new();

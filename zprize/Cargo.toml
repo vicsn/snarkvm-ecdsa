@@ -4,15 +4,15 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-snarkvm-algorithms = { path = "../../Trapdoortech_zprize-varuna-snarkVM/algorithms" }
-snarkvm-circuit = {  path = "../../Trapdoortech_zprize-varuna-snarkVM/circuit" }
-snarkvm-console = { path = "../../Trapdoortech_zprize-varuna-snarkVM/console", features = [
+snarkvm-algorithms = { path = "../../snarkVM/algorithms" }
+snarkvm-circuit = {  path = "../../snarkVM/circuit" }
+snarkvm-console = { path = "../../snarkVM/console", features = [
     "types",
 ] }
-snarkvm-curves = { path = "../../Trapdoortech_zprize-varuna-snarkVM/curves" }
-snarkvm-circuit-environment = { path = "../../Trapdoortech_zprize-varuna-snarkVM/circuit/environment" }
-snarkvm-console-network = { path = "../../Trapdoortech_zprize-varuna-snarkVM/console/network" }
-snarkvm-utilities = { path = "../../Trapdoortech_zprize-varuna-snarkVM/utilities" }
+snarkvm-curves = { path = "../../snarkVM/curves" }
+snarkvm-circuit-environment = { path = "../../snarkVM/circuit/environment" }
+snarkvm-console-network = { path = "../../snarkVM/console/network" }
+snarkvm-utilities = { path = "../../snarkVM/utilities" }
 
 rand = "0.8.5"
 k256 = { version = "0.13", features = ["ecdsa"] }

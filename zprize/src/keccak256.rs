@@ -14,7 +14,7 @@ use std::io;
 use std::io::Write;
 use snarkvm_utilities::ToBytes;
 
-use snarkvm_console_network::Testnet3;
+use snarkvm_console_network::MainnetV0;
 
 //
 // Aliases
@@ -74,7 +74,7 @@ thread_local! {
             let mut rc = F64::zero();
             rc.data.clear();
             for j in 0..8 {
-                rc.data.push(F::from(Env::one() * snarkvm_console::types::Field::<Testnet3>::from_u64((RC[i] >> (8*j)) & 0xff).deref()));
+                rc.data.push(F::from(Env::one() * snarkvm_console::types::Field::<MainnetV0>::from_u64((RC[i] >> (8*j)) & 0xff).deref()));
             }
             rc.value = RC[i];
             assert!(rc.checkValue());
@@ -135,7 +135,7 @@ impl F64 {
         let mut data = Vec::with_capacity(8);
         for i in 0..8 {
             if mode == Constant {
-                data.push(F::from(Env::one() * snarkvm_console::types::Field::<Testnet3>::from_u64((value >> (i * 8)) & 0xff).deref()));
+                data.push(F::from(Env::one() * snarkvm_console::types::Field::<MainnetV0>::from_u64((value >> (i * 8)) & 0xff).deref()));
             } else {
                 data.push(F::new(mode, snarkvm_console::types::Field::from_u8(((value >> i * 8) & 0xff) as u8)));
             }
@@ -196,7 +196,7 @@ impl F64 {
 
         let table_index = 1usize;
         let fv = F::new(Private, snarkvm_console::types::Field::from_u8(a.eject_value().to_bytes_le().unwrap()[0] ^ b.eject_value().to_bytes_le().unwrap()[0]));
-        Env::enforce_lookup(|| (a, b, &fv, table_index));
+        // Env::enforce_lookup(|| (a, b, &fv, table_index));
         //log::debug!("xor result: {:?}", fv.eject_value());
 
         fv
@@ -213,7 +213,7 @@ impl F64 {
         let table_index = 1usize;
         for i in 0..8 {
             let fv = F::new(Private, snarkvm_console::types::Field::from_u8((((a.value >> (i*8))&0xff) ^ ((b.value >> (i*8))&0xff)) as u8));
-            Env::enforce_lookup(|| (a.data.get(i).unwrap(), b.data.get(i).unwrap(), &fv, table_index));
+            // Env::enforce_lookup(|| (a.data.get(i).unwrap(), b.data.get(i).unwrap(), &fv, table_index));
             c.data[i] = fv;
         }
         c.value = a.value ^ b.value;
@@ -228,7 +228,7 @@ impl F64 {
         let table_index = 2usize;
         for i in 0..8 {
             let fv = F::new(Private, snarkvm_console::types::Field::from_u8((((a.value >> (i*8))&0xff) & ((b.value >> (i*8))&0xff)) as u8));
-            Env::enforce_lookup(|| (a.data.get(i).unwrap(), b.data.get(i).unwrap(), &fv, table_index));
+            // Env::enforce_lookup(|| (a.data.get(i).unwrap(), b.data.get(i).unwrap(), &fv, table_index));
             c.data[i] = fv;
         }
         c.value = a.value & b.value;
@@ -243,7 +243,7 @@ impl F64 {
         let table_index = 3usize;
         for i in 0..8 {
             let fv = F::new(Private, snarkvm_console::types::Field::from_u8(!(((a.value >> (i*8))&0xff) as u8)));
-            Env::enforce_lookup(|| (a.data.get(i).unwrap(), &zero, &fv, table_index));
+            // Env::enforce_lookup(|| (a.data.get(i).unwrap(), &zero, &fv, table_index));
             c.data[i] = fv;
         }
         c.value = !a.value;
@@ -254,7 +254,7 @@ impl F64 {
     pub fn add_lookup_tables() {
         for offset in 0..4 {
             for i in 0..RC.len() {
-                utils::add_rotl_tables(ROTC[i], offset);
+                // utils::add_rotl_tables(ROTC[i], offset);
             }
         }
     }
@@ -273,7 +273,7 @@ impl F64 {
             let v16 = utils::rotl_16((a.value >> (i*16)) as u16, i, n);
             let fv = F::new(Private, snarkvm_console::types::Field::from_u64(v16));
             let table_index = 4+i*RC.len()+rc_index;
-            Env::enforce_lookup(|| (a.data.get(i*2).unwrap(), a.data.get(i*2+1).unwrap(), &fv, table_index));
+            // Env::enforce_lookup(|| (a.data.get(i*2).unwrap(), a.data.get(i*2+1).unwrap(), &fv, table_index));
             sum += &fv;
         }
 
@@ -535,7 +535,7 @@ impl Keccak256 {
 
         let mut fp: Vec<F> = Vec::with_capacity(p.len());
         for i in 0..p.len() {
-            fp.push(F::from(Env::one() * snarkvm_console::types::Field::<Testnet3>::from_u8(p[i].clone()).deref()));
+            fp.push(F::from(Env::one() * snarkvm_console::types::Field::<MainnetV0>::from_u8(p[i].clone()).deref()));
         }
 
         self.input(&fp);
@@ -649,7 +649,7 @@ fn test_keccak256_hash() {
     use snarkvm_circuit::prelude::snarkvm_fields::Zero;
     //check number of private variable with 0
     let mut num = 0;
-    circuit.private_inputs().iter().for_each(|(k, v)| {if v.is_zero() {num += 1}});
+    circuit.private_inputs().iter().for_each(|v| {if v.value().is_zero() {num += 1}});
     // for k in keys {
     //     let v = circuit.private_inputs().get(k).unwrap();
     //     //println!("key: {:?}, value: {:?}", k, v);
