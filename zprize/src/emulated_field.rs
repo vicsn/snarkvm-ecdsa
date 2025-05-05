@@ -37,6 +37,7 @@ type F = Field<Env>;
 
 /*
     The main idea of emulated filed is from https://hackmd.io/@arielg/B13JoihA8.
+    // https://web.archive.org/web/20230709130814/https://hackmd.io/@arielg/B13JoihA8
 
     The Fp field is emulated using BLS12_377's Fr field.
 

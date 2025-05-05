@@ -107,6 +107,7 @@ pub fn is_less_than(a: &F, b: &F, len: usize) -> Boolean<Circuit>{
 
     for i in 0..len {
         let mut ls = Boolean::new(Private, a_vals[i] < b_vals[i]);
+        // TODO: can we just use Field::is_less_than() ?
         // Circuit::enforce_lookup(|| (a_bytes.get(i).unwrap(), b_bytes.get(i).unwrap(), &ls, table_index));
 
         let eq = a_bytes.get(i).unwrap().is_equal(b_bytes.get(i).unwrap());
