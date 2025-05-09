@@ -97,24 +97,10 @@ pub fn to_bytes(v: &F, len: usize) -> Vec<F> {
 }
 
 /* using lookup table to do the comparison */
-pub fn is_less_than(a: &F, b: &F, len: usize) -> Boolean<Circuit>{
-    let (a_bytes, a_vals) = to_bytes_withv(a, len);
-    let (b_bytes, b_vals) = to_bytes_withv(b, len);
-
-    let mut is_less_than = Boolean::constant(false);
-
-    let table_index = 0usize;
-
-    for i in 0..len {
-        let mut ls = Boolean::new(Private, a_vals[i] < b_vals[i]);
-        // TODO: can we just use Field::is_less_than() ?
-        // Circuit::enforce_lookup(|| (a_bytes.get(i).unwrap(), b_bytes.get(i).unwrap(), &ls, table_index));
-
-        let eq = a_bytes.get(i).unwrap().is_equal(b_bytes.get(i).unwrap());
-        is_less_than = ls.bitor(eq.bitand(&is_less_than));
-    }
-
-    is_less_than
+pub fn is_less_than(a: &F, b: &F, num_bytes: usize) -> Boolean<Circuit>{
+    let (a_bytes_circuit, a_bytes_console) = to_bytes_withv(a, num_bytes);
+    let (b_bytes_circuit, b_bytes_console) = to_bytes_withv(b, num_bytes);
+    a.is_less_than(b)
 }
 
 /* use overflow to check less than logic */
