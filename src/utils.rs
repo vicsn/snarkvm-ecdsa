@@ -112,7 +112,7 @@ pub fn is_less_than_constant(a: &F, b: &F, len: usize) -> Boolean<Circuit> {
 
     let highv = high.eject_value().to_bytes_le().unwrap();
 
-    let high_bit = F::new(high.eject_mode(), snarkvm_console::types::Field::from_u8(highv[0]);
+    let high_bit = F::new(high.eject_mode(), snarkvm_console::types::Field::from_u8(highv[0]));
     high_bit.is_equal(&F::zero())
 }
 
@@ -121,7 +121,7 @@ pub fn is_less_than_limb(a: &F, len: usize, pown: usize) -> Boolean<Circuit> {
 
     // Ensure the max byte is less than b.
     let b = F::new(Private, snarkvm_console::types::Field::from_u8(2u8.pow(pown as u32)));
-    a_bytes[len-1].is_less_than(&b));
+    a_bytes[len-1].is_less_than(&b)
 }
 
 pub fn splitField(v: &F, pos: usize, extra: usize) -> (F, F) {
