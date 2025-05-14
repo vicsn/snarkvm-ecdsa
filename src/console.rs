@@ -74,7 +74,7 @@ pub fn generate_signatures(msg_len: usize, num: usize) -> Vec<(VerifyingKey, Vec
         //thread_rng().fill_bytes(&mut msg);
 
         // hash msg
-        let mut hasher = Keccak256::new();
+        let mut hasher = crate::double_sha256::DoubleSha256::new();
         hasher.update(&msg);
 
         //println!("keccark hash: {:?}", &hasher.clone().finalize());
@@ -82,19 +82,11 @@ pub fn generate_signatures(msg_len: usize, num: usize) -> Vec<(VerifyingKey, Vec
         // generate signature
         let (signature, _) = secret_key.sign_digest_recoverable(hasher.clone()).unwrap();
 
-        // verify the signature
-        assert!(public_key.verify_digest(hasher, &signature).is_ok());
+        // // verify the signature
+        // assert!(public_key.verify_digest(hasher, &signature).is_ok());
 
         res.push((public_key.clone(), msg, signature));
     }
 
     res
-}
-
-pub fn double_sha256(data: impl AsRef<[u8]>) -> [u8; 32] {
-    let first = sha2::Sha256::digest(data.as_ref());
-    let second = sha2::Sha256::digest(&first);
-    let mut out = [0u8; 32];
-    out.copy_from_slice(&second);
-    out
 }

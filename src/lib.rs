@@ -22,6 +22,7 @@ use snarkvm_curves::bls12_377::Bls12_377;
 pub mod api;
 pub mod circuit;
 pub mod console;
+pub mod double_sha256;
 pub mod ecc_secp256k1;
 pub mod emulated_field;
 pub mod keccak256;
