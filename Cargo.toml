@@ -17,6 +17,7 @@ snarkvm-utilities = { git = "https://github.com/vicsn/snarkVM" , rev = "a64993f"
 rand = "0.8.5"
 k256 = { version = "0.13", features = ["ecdsa"] }
 ecdsa = { version = "0.16", features = ["signing", "verifying"] }
+sha2 = "0.10.9"
 sha3 = "0.10"
 num-bigint = { version = "0.4", features = ["rand"] }
 num-integer = {version = "0.1"}

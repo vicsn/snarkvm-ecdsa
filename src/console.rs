@@ -1,5 +1,5 @@
-use ecdsa::signature::DigestVerifier;
 use ecdsa::hazmat::bits2field;
+use ecdsa::signature::DigestVerifier;
 
 //use ecdsa::SigningKey;
 use k256::ecdsa::{Signature, SigningKey, VerifyingKey};
@@ -89,4 +89,12 @@ pub fn generate_signatures(msg_len: usize, num: usize) -> Vec<(VerifyingKey, Vec
     }
 
     res
+}
+
+pub fn double_sha256(data: impl AsRef<[u8]>) -> [u8; 32] {
+    let first = sha2::Sha256::digest(data.as_ref());
+    let second = sha2::Sha256::digest(&first);
+    let mut out = [0u8; 32];
+    out.copy_from_slice(&second);
+    out
 }
