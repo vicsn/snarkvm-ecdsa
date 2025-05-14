@@ -14,8 +14,6 @@ impl OutputSizeUser for DoubleSha256 {
     type OutputSize = U32;
 }
 
-impl<D> DigestVerifier<D, Signature> for 
-
 impl Digest for DoubleSha256 {
     #[inline(always)]
     fn new() -> Self {
