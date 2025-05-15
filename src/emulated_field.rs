@@ -364,7 +364,7 @@ impl EmulatedField {
         Env::assert_eq(&rlp, &F::one());
 
         /*
-        3. Apply multiplication gates and addition gates to evaluate t he following intermediate products mod 2**t
+        3. Apply multiplication gates and addition gates to evaluate the following intermediate products mod 2**t
             *) t_0 = a_0b_0 + q_0p'_0 - bits [0, 2b+1]
             *) t_1 = a_0b_1 + a_1b_0 + q_0p'_1 + q_1p'_0 - bits [b, 3b+2]
             *) t_2 = a_0b_2 + a_1b_1 + a_2_b0 + q_0p'_2 + q_1p'_1 + q_2p'_0 [2b, 4b+3]

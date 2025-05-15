@@ -98,8 +98,8 @@ pub fn to_bytes(v: &F, len: usize) -> Vec<F> {
 
 /* using lookup table to do the comparison */
 pub fn is_less_than(a: &F, b: &F, num_bytes: usize) -> Boolean<Circuit>{
-    let (a_bytes_circuit, a_bytes_console) = to_bytes_withv(a, num_bytes);
-    let (b_bytes_circuit, b_bytes_console) = to_bytes_withv(b, num_bytes);
+    to_bytes_withv(a, num_bytes);
+    to_bytes_withv(b, num_bytes);
     a.is_less_than(b)
 }
 
@@ -112,25 +112,16 @@ pub fn is_less_than_constant(a: &F, b: &F, len: usize) -> Boolean<Circuit> {
 
     let highv = high.eject_value().to_bytes_le().unwrap();
 
-    let mut ls = Boolean::new(Private, highv[0] < 1);
-    let max = Circuit::one() * COEFFS[0].deref();
-
-    let table_index = 0usize;
-    // Circuit::enforce_lookup(|| (&high, max, &ls, table_index));
-
-    ls
+    let high_bit = F::new(high.eject_mode(), snarkvm_console::types::Field::from_u8(highv[0]));
+    high_bit.is_equal(&F::zero())
 }
 
 pub fn is_less_than_limb(a: &F, len: usize, pown: usize) -> Boolean<Circuit> {
-    let (a_bytes, a_vals) = to_bytes_withv(a, len);
+    let (a_bytes, _) = to_bytes_withv(a, len);
 
-    let mut ls = Boolean::new(Private, a_vals[len-1] < 2u8.pow(pown as u32));
-    let max = Circuit::one() * COEFFS[pown].deref();
-
-    let table_index = 0usize;
-    // Circuit::enforce_lookup(|| (a_bytes.get(len-1).unwrap(), max, &ls, table_index));
-
-    ls
+    // Ensure the max byte is less than b.
+    let b = F::new(Private, snarkvm_console::types::Field::from_u8(2u8.pow(pown as u32)));
+    a_bytes[len-1].is_less_than(&b)
 }
 
 pub fn splitField(v: &F, pos: usize, extra: usize) -> (F, F) {

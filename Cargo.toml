@@ -4,28 +4,34 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-snarkvm-algorithms = { path = "../../snarkVM/algorithms" }
-snarkvm-circuit = {  path = "../../snarkVM/circuit" }
-snarkvm-console = { path = "../../snarkVM/console", features = [
+snarkvm-algorithms = { git = "https://github.com/vicsn/snarkVM" , rev = "a64993f"}
+snarkvm-circuit = { git = "https://github.com/vicsn/snarkVM" , rev = "a64993f"}
+snarkvm-console = { git = "https://github.com/vicsn/snarkVM" , rev = "a64993f" , features = [
     "types",
 ] }
-snarkvm-curves = { path = "../../snarkVM/curves" }
-snarkvm-circuit-environment = { path = "../../snarkVM/circuit/environment" }
-snarkvm-console-network = { path = "../../snarkVM/console/network" }
-snarkvm-utilities = { path = "../../snarkVM/utilities" }
+snarkvm-curves = { git = "https://github.com/vicsn/snarkVM" , rev = "a64993f" }
+snarkvm-circuit-environment = { git = "https://github.com/vicsn/snarkVM" , rev = "a64993f" }
+snarkvm-console-network = { git = "https://github.com/vicsn/snarkVM" , rev = "a64993f" }
+snarkvm-utilities = { git = "https://github.com/vicsn/snarkVM" , rev = "a64993f" }
 
 rand = "0.8.5"
 k256 = { version = "0.13", features = ["ecdsa"] }
 ecdsa = { version = "0.16", features = ["signing", "verifying"] }
+sha2 = "0.10.9"
 sha3 = "0.10"
 num-bigint = { version = "0.4", features = ["rand"] }
 num-integer = {version = "0.1"}
 log = "0.4"
 rayon = "1.8"
 rust-crypto = "^0.2"
+crypto-common = "0.1.6"
 memory-stats = "1.0.0"
 
 crossbeam = "0.8.4"
+digest = "0.10.7"
+generic-array = "1.2.0"
+hex-literal = "1.0.0"
+signature = { version = "2.2.0", features = ["digest"] }
 
 [dependencies.lazy_static]
 version = "1.4"

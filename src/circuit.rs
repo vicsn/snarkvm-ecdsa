@@ -1,31 +1,29 @@
 use num_bigint::BigUint;
-use sha3::Keccak256;
 use snarkvm_circuit_environment::{prelude::PrimeField, Eject, Environment, Inject, Mode, Zero};
 use snarkvm_console_network::prelude::Itertools;
 use snarkvm_utilities::biginteger::BigInteger;
-use std::ops::{Add, Sub};
+use std::ops::{Add, Deref, Sub};
 
 // TODO: better to use AleoV0 or Circuit?
 use snarkvm_circuit::environment::prelude::num_traits::One;
-use snarkvm_circuit::{Circuit as Env, Field};
-use snarkvm_utilities::ToBytes;
+use snarkvm_circuit::{Circuit as Env, Field, sha2::Sha2_256, Boolean, Hash};
+use snarkvm_utilities::{FromBits, ToBits, ToBytes};
 //use snarkvm_circuit::{AleoV0 as Env, Field};
 
 use crate::ecc_secp256k1::Affine;
 use crate::emulated_field::{secp256k1_Fp, secp256k1_Fr, EmulatedField};
-use crate::keccak256;
-use crate::utils;
-use snarkvm_circuit_environment::FromBits;
 use snarkvm_circuit_environment::Mode::Private;
 
 use snarkvm_circuit::prelude::num_traits::FromPrimitive;
-
+use snarkvm_console_network::Network;
 //
 // Aliases
 // =======
 //
 
 type F = Field<Env>;
+
+type Bool = Boolean<Env>;
 
 //
 // Data structures
@@ -50,16 +48,30 @@ type F = Field<Env>;
 // we use a super naive way to encode things: 1 field = 1 byte.
 //
 
+///
+#[derive(Debug, Clone)]
 pub struct ECDSAPublicKey {
     bytes: Vec<F>,
 }
 
+/// The signature to be signed in byte representation.
+#[derive(Debug, Clone)]
 pub struct ECDSASignature {
     bytes: Vec<F>,
 }
 
+/// The message to be signed in circuit BE bit representation (so that it can be hashed by the Sha256 gadget).
+#[derive(Debug, Clone)]
 pub struct Message {
-    bytes: Vec<F>,
+    pub bits: Vec<Bool>,
+}
+
+impl Deref for Message {
+    type Target = Vec<Bool>;
+
+    fn deref(&self) -> &Self::Target {
+        &self.bits
+    }
 }
 
 //
@@ -75,11 +87,12 @@ impl Inject for Message {
             // we'd have to constrain things to be bytes
             Mode::Private => unimplemented!(),
             Mode::Constant | Mode::Public => Message {
-                bytes: message
+                bits: message
                     .iter()
-                    .map(|b| {
-                        let f = snarkvm_console::types::Field::from_u8(*b);
-                        F::new(mode, f)
+                    .flat_map(|b| {
+                        b.to_bits_be().into_iter().map(|b| {
+                            Bool::new(mode, b)
+                        })
                     })
                     .collect_vec(),
             },
@@ -91,18 +104,19 @@ impl Eject for Message {
     type Primitive = Vec<u8>;
 
     fn eject_mode(&self) -> Mode {
-        self.bytes[0].eject_mode()
+        self.bits[0].eject_mode()
     }
 
     fn eject_value(&self) -> Self::Primitive {
-        self.bytes
+        self.bits
             .iter()
+            .chunks(8)
+            .into_iter()
             .map(|b| {
-                let f = b.eject_value();
-                let big = f.to_bigint();
-                let res = big.to_biguint().to_bytes_le();
-                assert_eq!(res.len(), 1);
-                res[0]
+                let bits = b.into_iter().map(|b| {
+                    b.eject_value()
+                }).collect::<Vec<bool>>();
+                u8::from_bits_be(&bits).unwrap()
             })
             .collect_vec()
     }
@@ -212,21 +226,21 @@ impl Eject for ECDSASignature {
 //
 /// Verifies a single ECDSA signature on a message.
 pub fn verify_one(_public_key: ECDSAPublicKey, _signature: ECDSASignature, msg: Message, compile_mode: bool) {
-    // don't add tables in constraint generation
-    // if compile_mode {
-    //     utils::add_tables();
-    //     keccak256::F64::add_lookup_tables();
-    // }
+    // Instantiate the sha2_256 hash function and hash the message.
+    let sha2 = Sha2_256::new();
+    let intermediate_bits = sha2.hash(&msg);
+    let bits = sha2.hash(&intermediate_bits);
 
-    //keccak hash
-    let mut kk = keccak256::Keccak256::new();
-    kk.input(&msg.bytes);
+    // Get the hash as a BigUint so the emulated field can be created from all 256 bytes
+    // (SnarkVM fields would truncate the hash).
+    let (mode, z) = Message { bits }.eject();
+    println!("z: {:?}", z);
 
-    let mut hash = vec![F::zero(); 32];
-    kk.result(&mut hash.as_mut_slice());
-    hash.reverse();
 
-    let h = EmulatedField::from_F(hash.as_slice(), secp256k1_Fr);
+    let hash = BigUint::from_bytes_be(z.as_slice());
+
+    // Create the emulated Fr field element from the hash.
+    let h = EmulatedField::from_BigUint(&hash, secp256k1_Fr.LIMB_BYTES_NUM, mode, secp256k1_Fr);
 
     //r,s
     let vr = _signature
@@ -308,4 +322,33 @@ pub fn verify_one(_public_key: ECDSAPublicKey, _signature: ECDSASignature, msg: 
 
     assert_eq!(mexp.x.value, r.value);
     EmulatedField::enforce_eq(&mexp.x, &r);
+}
+
+#[cfg(test)]
+mod tests {
+    use snarkvm_utilities::{TestRng, Uniform};
+    use super::*;
+
+    #[test]
+    fn test_msg_injection_and_ejection() {
+        // Generate 100 random 256-bit messages and test injection and ejection.
+        // This optimally should have deterministic test vectors.
+        for i in 0..100 {
+            let mut rng = TestRng::default();
+            let msg = (0..256)
+                .map(|_| u8::rand(&mut rng))
+                .collect::<Vec<u8>>();
+            let message = Message::new(Mode::Public, msg.clone());
+            assert_eq!(msg, message.eject_value());
+        }
+    }
+
+    #[test]
+    fn test_msg_layout() {
+        let mut rng = TestRng::default();
+        let msg = (0..256)
+            .map(|_| u8::rand(&mut rng))
+            .collect::<Vec<u8>>();
+        let message = Message::new(Mode::Public, msg.clone());
+    }
 }

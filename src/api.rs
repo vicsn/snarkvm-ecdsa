@@ -34,7 +34,7 @@ use crate::console;
 use crate::Tuples;
 
 use log::info;
-
+use crate::console::generate_signatures;
 //
 // Aliases
 // =======
