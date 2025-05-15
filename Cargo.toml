@@ -4,15 +4,15 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-snarkvm-algorithms = { git = "https://github.com/vicsn/snarkVM" , rev = "a64993f"}
-snarkvm-circuit = { git = "https://github.com/vicsn/snarkVM" , rev = "a64993f"}
-snarkvm-console = { git = "https://github.com/vicsn/snarkVM" , rev = "a64993f" , features = [
+snarkvm-algorithms = { git = "https://github.com/vicsn/snarkVM" , rev = "d0952aa6"}
+snarkvm-circuit = { git = "https://github.com/vicsn/snarkVM" , rev = "d0952aa6"}
+snarkvm-console = { git = "https://github.com/vicsn/snarkVM" , rev = "d0952aa6" , features = [
     "types",
 ] }
-snarkvm-curves = { git = "https://github.com/vicsn/snarkVM" , rev = "a64993f" }
-snarkvm-circuit-environment = { git = "https://github.com/vicsn/snarkVM" , rev = "a64993f" }
-snarkvm-console-network = { git = "https://github.com/vicsn/snarkVM" , rev = "a64993f" }
-snarkvm-utilities = { git = "https://github.com/vicsn/snarkVM" , rev = "a64993f" }
+snarkvm-curves = { git = "https://github.com/vicsn/snarkVM" , rev = "d0952aa6" }
+snarkvm-circuit-environment = { git = "https://github.com/vicsn/snarkVM" , rev = "d0952aa6" }
+snarkvm-console-network = { git = "https://github.com/vicsn/snarkVM" , rev = "d0952aa6" }
+snarkvm-utilities = { git = "https://github.com/vicsn/snarkVM" , rev = "d0952aa6" }
 
 rand = "0.8.5"
 k256 = { version = "0.13", features = ["ecdsa"] }

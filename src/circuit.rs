@@ -6,7 +6,7 @@ use std::ops::{Add, Deref, Sub};
 
 // TODO: better to use AleoV0 or Circuit?
 use snarkvm_circuit::environment::prelude::num_traits::One;
-use snarkvm_circuit::{Circuit as Env, Field, sha2::Sha2_256, Boolean, Hash};
+use snarkvm_circuit::{Circuit as Env, Field, sha2::Sha2_256, ripemd160::Ripemd160, Boolean, Hash};
 use snarkvm_utilities::{FromBits, ToBits, ToBytes};
 //use snarkvm_circuit::{AleoV0 as Env, Field};
 
@@ -51,7 +51,7 @@ type Bool = Boolean<Env>;
 ///
 #[derive(Debug, Clone)]
 pub struct ECDSAPublicKey {
-    bytes: Vec<F>,
+    pub bytes: Vec<F>,
 }
 
 /// The signature to be signed in byte representation.
@@ -228,14 +228,33 @@ impl Eject for ECDSASignature {
 pub fn verify_one(_public_key: ECDSAPublicKey, _signature: ECDSASignature, msg: Message, compile_mode: bool) {
     // Instantiate the sha2_256 hash function and hash the message.
     let sha2 = Sha2_256::new();
+    let ripemd160 = Ripemd160::new();
+
     let intermediate_bits = sha2.hash(&msg);
     let bits = sha2.hash(&intermediate_bits);
+
+    // Get the public key to bytes.
+    let public_key_bytes = _public_key
+        .bytes
+        .iter()
+        .map(|b| {
+            let f = b.eject_value();
+            let big = f.to_bigint();
+            let res = big.to_biguint().to_bytes_le();
+            assert_eq!(res.len(), 1);
+            res[0]
+        })
+        .collect_vec();
+
+    // Create bits based message from the bytes. - TODO: Assert public key bits matches external public key bits.
+    // let message = Message::new(Mode::Public, public_key_bytes);
+    // let public_key_intermediate_bits = sha2.hash(&message);
+    // let public_key_bits = ripemd160.hash(&public_key_intermediate_bits);
 
     // Get the hash as a BigUint so the emulated field can be created from all 256 bytes
     // (SnarkVM fields would truncate the hash).
     let (mode, z) = Message { bits }.eject();
     println!("z: {:?}", z);
-
 
     let hash = BigUint::from_bytes_be(z.as_slice());
 

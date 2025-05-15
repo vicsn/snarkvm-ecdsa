@@ -1502,7 +1502,7 @@ dependencies = [
 [[package]]
 name = "snarkvm-algorithms"
 version = "1.6.0"
-source = "git+https://github.com/vicsn/snarkVM?rev=a64993f#a64993f6baa6a41a6541bb872b448a28bcbb5add"
+source = "git+https://github.com/vicsn/snarkVM?rev=d0952aa6#d0952aa6e7e5f04a12bd8e8547556ff0cd308acd"
 dependencies = [
  "aleo-std",
  "anyhow",
@@ -1533,7 +1533,7 @@ dependencies = [
 [[package]]
 name = "snarkvm-circuit"
 version = "1.6.0"
-source = "git+https://github.com/vicsn/snarkVM?rev=a64993f#a64993f6baa6a41a6541bb872b448a28bcbb5add"
+source = "git+https://github.com/vicsn/snarkVM?rev=d0952aa6#d0952aa6e7e5f04a12bd8e8547556ff0cd308acd"
 dependencies = [
  "snarkvm-circuit-account",
  "snarkvm-circuit-algorithms",
@@ -1547,7 +1547,7 @@ dependencies = [
 [[package]]
 name = "snarkvm-circuit-account"
 version = "1.6.0"
-source = "git+https://github.com/vicsn/snarkVM?rev=a64993f#a64993f6baa6a41a6541bb872b448a28bcbb5add"
+source = "git+https://github.com/vicsn/snarkVM?rev=d0952aa6#d0952aa6e7e5f04a12bd8e8547556ff0cd308acd"
 dependencies = [
  "snarkvm-circuit-algorithms",
  "snarkvm-circuit-network",
@@ -1558,7 +1558,7 @@ dependencies = [
 [[package]]
 name = "snarkvm-circuit-algorithms"
 version = "1.6.0"
-source = "git+https://github.com/vicsn/snarkVM?rev=a64993f#a64993f6baa6a41a6541bb872b448a28bcbb5add"
+source = "git+https://github.com/vicsn/snarkVM?rev=d0952aa6#d0952aa6e7e5f04a12bd8e8547556ff0cd308acd"
 dependencies = [
  "snarkvm-circuit-types",
  "snarkvm-console-algorithms",
@@ -1568,7 +1568,7 @@ dependencies = [
 [[package]]
 name = "snarkvm-circuit-collections"
 version = "1.6.0"
-source = "git+https://github.com/vicsn/snarkVM?rev=a64993f#a64993f6baa6a41a6541bb872b448a28bcbb5add"
+source = "git+https://github.com/vicsn/snarkVM?rev=d0952aa6#d0952aa6e7e5f04a12bd8e8547556ff0cd308acd"
 dependencies = [
  "snarkvm-circuit-algorithms",
  "snarkvm-circuit-types",
@@ -1578,7 +1578,7 @@ dependencies = [
 [[package]]
 name = "snarkvm-circuit-environment"
 version = "1.6.0"
-source = "git+https://github.com/vicsn/snarkVM?rev=a64993f#a64993f6baa6a41a6541bb872b448a28bcbb5add"
+source = "git+https://github.com/vicsn/snarkVM?rev=d0952aa6#d0952aa6e7e5f04a12bd8e8547556ff0cd308acd"
 dependencies = [
  "indexmap 2.0.2",
  "itertools 0.11.0",
@@ -1597,12 +1597,12 @@ dependencies = [
 [[package]]
 name = "snarkvm-circuit-environment-witness"
 version = "1.6.0"
-source = "git+https://github.com/vicsn/snarkVM?rev=a64993f#a64993f6baa6a41a6541bb872b448a28bcbb5add"
+source = "git+https://github.com/vicsn/snarkVM?rev=d0952aa6#d0952aa6e7e5f04a12bd8e8547556ff0cd308acd"
 
 [[package]]
 name = "snarkvm-circuit-network"
 version = "1.6.0"
-source = "git+https://github.com/vicsn/snarkVM?rev=a64993f#a64993f6baa6a41a6541bb872b448a28bcbb5add"
+source = "git+https://github.com/vicsn/snarkVM?rev=d0952aa6#d0952aa6e7e5f04a12bd8e8547556ff0cd308acd"
 dependencies = [
  "snarkvm-circuit-algorithms",
  "snarkvm-circuit-collections",
@@ -1613,7 +1613,7 @@ dependencies = [
 [[package]]
 name = "snarkvm-circuit-program"
 version = "1.6.0"
-source = "git+https://github.com/vicsn/snarkVM?rev=a64993f#a64993f6baa6a41a6541bb872b448a28bcbb5add"
+source = "git+https://github.com/vicsn/snarkVM?rev=d0952aa6#d0952aa6e7e5f04a12bd8e8547556ff0cd308acd"
 dependencies = [
  "paste",
  "snarkvm-circuit-account",
@@ -1628,7 +1628,7 @@ dependencies = [
 [[package]]
 name = "snarkvm-circuit-types"
 version = "1.6.0"
-source = "git+https://github.com/vicsn/snarkVM?rev=a64993f#a64993f6baa6a41a6541bb872b448a28bcbb5add"
+source = "git+https://github.com/vicsn/snarkVM?rev=d0952aa6#d0952aa6e7e5f04a12bd8e8547556ff0cd308acd"
 dependencies = [
  "snarkvm-circuit-environment",
  "snarkvm-circuit-types-address",
@@ -1643,7 +1643,7 @@ dependencies = [
 [[package]]
 name = "snarkvm-circuit-types-address"
 version = "1.6.0"
-source = "git+https://github.com/vicsn/snarkVM?rev=a64993f#a64993f6baa6a41a6541bb872b448a28bcbb5add"
+source = "git+https://github.com/vicsn/snarkVM?rev=d0952aa6#d0952aa6e7e5f04a12bd8e8547556ff0cd308acd"
 dependencies = [
  "snarkvm-circuit-environment",
  "snarkvm-circuit-types-boolean",
@@ -1656,7 +1656,7 @@ dependencies = [
 [[package]]
 name = "snarkvm-circuit-types-boolean"
 version = "1.6.0"
-source = "git+https://github.com/vicsn/snarkVM?rev=a64993f#a64993f6baa6a41a6541bb872b448a28bcbb5add"
+source = "git+https://github.com/vicsn/snarkVM?rev=d0952aa6#d0952aa6e7e5f04a12bd8e8547556ff0cd308acd"
 dependencies = [
  "snarkvm-circuit-environment",
  "snarkvm-console-types-boolean",
@@ -1665,7 +1665,7 @@ dependencies = [
 [[package]]
 name = "snarkvm-circuit-types-field"
 version = "1.6.0"
-source = "git+https://github.com/vicsn/snarkVM?rev=a64993f#a64993f6baa6a41a6541bb872b448a28bcbb5add"
+source = "git+https://github.com/vicsn/snarkVM?rev=d0952aa6#d0952aa6e7e5f04a12bd8e8547556ff0cd308acd"
 dependencies = [
  "snarkvm-circuit-environment",
  "snarkvm-circuit-types-boolean",
@@ -1675,7 +1675,7 @@ dependencies = [
 [[package]]
 name = "snarkvm-circuit-types-group"
 version = "1.6.0"
-source = "git+https://github.com/vicsn/snarkVM?rev=a64993f#a64993f6baa6a41a6541bb872b448a28bcbb5add"
+source = "git+https://github.com/vicsn/snarkVM?rev=d0952aa6#d0952aa6e7e5f04a12bd8e8547556ff0cd308acd"
 dependencies = [
  "snarkvm-circuit-environment",
  "snarkvm-circuit-types-boolean",
@@ -1687,7 +1687,7 @@ dependencies = [
 [[package]]
 name = "snarkvm-circuit-types-integers"
 version = "1.6.0"
-source = "git+https://github.com/vicsn/snarkVM?rev=a64993f#a64993f6baa6a41a6541bb872b448a28bcbb5add"
+source = "git+https://github.com/vicsn/snarkVM?rev=d0952aa6#d0952aa6e7e5f04a12bd8e8547556ff0cd308acd"
 dependencies = [
  "snarkvm-circuit-environment",
  "snarkvm-circuit-types-boolean",
@@ -1699,7 +1699,7 @@ dependencies = [
 [[package]]
 name = "snarkvm-circuit-types-scalar"
 version = "1.6.0"
-source = "git+https://github.com/vicsn/snarkVM?rev=a64993f#a64993f6baa6a41a6541bb872b448a28bcbb5add"
+source = "git+https://github.com/vicsn/snarkVM?rev=d0952aa6#d0952aa6e7e5f04a12bd8e8547556ff0cd308acd"
 dependencies = [
  "snarkvm-circuit-environment",
  "snarkvm-circuit-types-boolean",
@@ -1710,7 +1710,7 @@ dependencies = [
 [[package]]
 name = "snarkvm-circuit-types-string"
 version = "1.6.0"
-source = "git+https://github.com/vicsn/snarkVM?rev=a64993f#a64993f6baa6a41a6541bb872b448a28bcbb5add"
+source = "git+https://github.com/vicsn/snarkVM?rev=d0952aa6#d0952aa6e7e5f04a12bd8e8547556ff0cd308acd"
 dependencies = [
  "snarkvm-circuit-environment",
  "snarkvm-circuit-types-boolean",
@@ -1722,7 +1722,7 @@ dependencies = [
 [[package]]
 name = "snarkvm-console"
 version = "1.6.0"
-source = "git+https://github.com/vicsn/snarkVM?rev=a64993f#a64993f6baa6a41a6541bb872b448a28bcbb5add"
+source = "git+https://github.com/vicsn/snarkVM?rev=d0952aa6#d0952aa6e7e5f04a12bd8e8547556ff0cd308acd"
 dependencies = [
  "snarkvm-console-account",
  "snarkvm-console-algorithms",
@@ -1735,7 +1735,7 @@ dependencies = [
 [[package]]
 name = "snarkvm-console-account"
 version = "1.6.0"
-source = "git+https://github.com/vicsn/snarkVM?rev=a64993f#a64993f6baa6a41a6541bb872b448a28bcbb5add"
+source = "git+https://github.com/vicsn/snarkVM?rev=d0952aa6#d0952aa6e7e5f04a12bd8e8547556ff0cd308acd"
 dependencies = [
  "bs58",
  "snarkvm-console-network",
@@ -1746,7 +1746,7 @@ dependencies = [
 [[package]]
 name = "snarkvm-console-algorithms"
 version = "1.6.0"
-source = "git+https://github.com/vicsn/snarkVM?rev=a64993f#a64993f6baa6a41a6541bb872b448a28bcbb5add"
+source = "git+https://github.com/vicsn/snarkVM?rev=d0952aa6#d0952aa6e7e5f04a12bd8e8547556ff0cd308acd"
 dependencies = [
  "blake2s_simd",
  "smallvec",
@@ -1759,7 +1759,7 @@ dependencies = [
 [[package]]
 name = "snarkvm-console-collections"
 version = "1.6.0"
-source = "git+https://github.com/vicsn/snarkVM?rev=a64993f#a64993f6baa6a41a6541bb872b448a28bcbb5add"
+source = "git+https://github.com/vicsn/snarkVM?rev=d0952aa6#d0952aa6e7e5f04a12bd8e8547556ff0cd308acd"
 dependencies = [
  "aleo-std",
  "rayon",
@@ -1770,7 +1770,7 @@ dependencies = [
 [[package]]
 name = "snarkvm-console-network"
 version = "1.6.0"
-source = "git+https://github.com/vicsn/snarkVM?rev=a64993f#a64993f6baa6a41a6541bb872b448a28bcbb5add"
+source = "git+https://github.com/vicsn/snarkVM?rev=d0952aa6#d0952aa6e7e5f04a12bd8e8547556ff0cd308acd"
 dependencies = [
  "anyhow",
  "indexmap 2.0.2",
@@ -1793,7 +1793,7 @@ dependencies = [
 [[package]]
 name = "snarkvm-console-network-environment"
 version = "1.6.0"
-source = "git+https://github.com/vicsn/snarkVM?rev=a64993f#a64993f6baa6a41a6541bb872b448a28bcbb5add"
+source = "git+https://github.com/vicsn/snarkVM?rev=d0952aa6#d0952aa6e7e5f04a12bd8e8547556ff0cd308acd"
 dependencies = [
  "anyhow",
  "bech32",
@@ -1811,7 +1811,7 @@ dependencies = [
 [[package]]
 name = "snarkvm-console-program"
 version = "1.6.0"
-source = "git+https://github.com/vicsn/snarkVM?rev=a64993f#a64993f6baa6a41a6541bb872b448a28bcbb5add"
+source = "git+https://github.com/vicsn/snarkVM?rev=d0952aa6#d0952aa6e7e5f04a12bd8e8547556ff0cd308acd"
 dependencies = [
  "enum-iterator",
  "enum_index",
@@ -1833,7 +1833,7 @@ dependencies = [
 [[package]]
 name = "snarkvm-console-types"
 version = "1.6.0"
-source = "git+https://github.com/vicsn/snarkVM?rev=a64993f#a64993f6baa6a41a6541bb872b448a28bcbb5add"
+source = "git+https://github.com/vicsn/snarkVM?rev=d0952aa6#d0952aa6e7e5f04a12bd8e8547556ff0cd308acd"
 dependencies = [
  "snarkvm-console-network-environment",
  "snarkvm-console-types-address",
@@ -1848,7 +1848,7 @@ dependencies = [
 [[package]]
 name = "snarkvm-console-types-address"
 version = "1.6.0"
-source = "git+https://github.com/vicsn/snarkVM?rev=a64993f#a64993f6baa6a41a6541bb872b448a28bcbb5add"
+source = "git+https://github.com/vicsn/snarkVM?rev=d0952aa6#d0952aa6e7e5f04a12bd8e8547556ff0cd308acd"
 dependencies = [
  "snarkvm-console-network-environment",
  "snarkvm-console-types-boolean",
@@ -1859,7 +1859,7 @@ dependencies = [
 [[package]]
 name = "snarkvm-console-types-boolean"
 version = "1.6.0"
-source = "git+https://github.com/vicsn/snarkVM?rev=a64993f#a64993f6baa6a41a6541bb872b448a28bcbb5add"
+source = "git+https://github.com/vicsn/snarkVM?rev=d0952aa6#d0952aa6e7e5f04a12bd8e8547556ff0cd308acd"
 dependencies = [
  "snarkvm-console-network-environment",
 ]
@@ -1867,7 +1867,7 @@ dependencies = [
 [[package]]
 name = "snarkvm-console-types-field"
 version = "1.6.0"
-source = "git+https://github.com/vicsn/snarkVM?rev=a64993f#a64993f6baa6a41a6541bb872b448a28bcbb5add"
+source = "git+https://github.com/vicsn/snarkVM?rev=d0952aa6#d0952aa6e7e5f04a12bd8e8547556ff0cd308acd"
 dependencies = [
  "snarkvm-console-network-environment",
  "snarkvm-console-types-boolean",
@@ -1877,7 +1877,7 @@ dependencies = [
 [[package]]
 name = "snarkvm-console-types-group"
 version = "1.6.0"
-source = "git+https://github.com/vicsn/snarkVM?rev=a64993f#a64993f6baa6a41a6541bb872b448a28bcbb5add"
+source = "git+https://github.com/vicsn/snarkVM?rev=d0952aa6#d0952aa6e7e5f04a12bd8e8547556ff0cd308acd"
 dependencies = [
  "snarkvm-console-network-environment",
  "snarkvm-console-types-boolean",
@@ -1888,7 +1888,7 @@ dependencies = [
 [[package]]
 name = "snarkvm-console-types-integers"
 version = "1.6.0"
-source = "git+https://github.com/vicsn/snarkVM?rev=a64993f#a64993f6baa6a41a6541bb872b448a28bcbb5add"
+source = "git+https://github.com/vicsn/snarkVM?rev=d0952aa6#d0952aa6e7e5f04a12bd8e8547556ff0cd308acd"
 dependencies = [
  "snarkvm-console-network-environment",
  "snarkvm-console-types-boolean",
@@ -1899,7 +1899,7 @@ dependencies = [
 [[package]]
 name = "snarkvm-console-types-scalar"
 version = "1.6.0"
-source = "git+https://github.com/vicsn/snarkVM?rev=a64993f#a64993f6baa6a41a6541bb872b448a28bcbb5add"
+source = "git+https://github.com/vicsn/snarkVM?rev=d0952aa6#d0952aa6e7e5f04a12bd8e8547556ff0cd308acd"
 dependencies = [
  "snarkvm-console-network-environment",
  "snarkvm-console-types-boolean",
@@ -1910,7 +1910,7 @@ dependencies = [
 [[package]]
 name = "snarkvm-console-types-string"
 version = "1.6.0"
-source = "git+https://github.com/vicsn/snarkVM?rev=a64993f#a64993f6baa6a41a6541bb872b448a28bcbb5add"
+source = "git+https://github.com/vicsn/snarkVM?rev=d0952aa6#d0952aa6e7e5f04a12bd8e8547556ff0cd308acd"
 dependencies = [
  "snarkvm-console-network-environment",
  "snarkvm-console-types-boolean",
@@ -1921,7 +1921,7 @@ dependencies = [
 [[package]]
 name = "snarkvm-curves"
 version = "1.6.0"
-source = "git+https://github.com/vicsn/snarkVM?rev=a64993f#a64993f6baa6a41a6541bb872b448a28bcbb5add"
+source = "git+https://github.com/vicsn/snarkVM?rev=d0952aa6#d0952aa6e7e5f04a12bd8e8547556ff0cd308acd"
 dependencies = [
  "rand 0.8.5",
  "rayon",
@@ -1935,7 +1935,7 @@ dependencies = [
 [[package]]
 name = "snarkvm-fields"
 version = "1.6.0"
-source = "git+https://github.com/vicsn/snarkVM?rev=a64993f#a64993f6baa6a41a6541bb872b448a28bcbb5add"
+source = "git+https://github.com/vicsn/snarkVM?rev=d0952aa6#d0952aa6e7e5f04a12bd8e8547556ff0cd308acd"
 dependencies = [
  "aleo-std",
  "anyhow",
@@ -1952,7 +1952,7 @@ dependencies = [
 [[package]]
 name = "snarkvm-parameters"
 version = "1.6.0"
-source = "git+https://github.com/vicsn/snarkVM?rev=a64993f#a64993f6baa6a41a6541bb872b448a28bcbb5add"
+source = "git+https://github.com/vicsn/snarkVM?rev=d0952aa6#d0952aa6e7e5f04a12bd8e8547556ff0cd308acd"
 dependencies = [
  "aleo-std",
  "anyhow",
@@ -1977,7 +1977,7 @@ dependencies = [
 [[package]]
 name = "snarkvm-utilities"
 version = "1.6.0"
-source = "git+https://github.com/vicsn/snarkVM?rev=a64993f#a64993f6baa6a41a6541bb872b448a28bcbb5add"
+source = "git+https://github.com/vicsn/snarkVM?rev=d0952aa6#d0952aa6e7e5f04a12bd8e8547556ff0cd308acd"
 dependencies = [
  "aleo-std",
  "anyhow",
@@ -1998,7 +1998,7 @@ dependencies = [
 [[package]]
 name = "snarkvm-utilities-derives"
 version = "1.6.0"
-source = "git+https://github.com/vicsn/snarkVM?rev=a64993f#a64993f6baa6a41a6541bb872b448a28bcbb5add"
+source = "git+https://github.com/vicsn/snarkVM?rev=d0952aa6#d0952aa6e7e5f04a12bd8e8547556ff0cd308acd"
 dependencies = [
  "proc-macro2",
  "quote 1.0.40",
