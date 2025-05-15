@@ -1,3 +1,4 @@
+use bitcoin::secp256k1::SecretKey;
 use ecdsa::hazmat::bits2field;
 use ecdsa::signature::DigestVerifier;
 
@@ -93,4 +94,50 @@ pub fn generate_signatures(msg_len: usize, num: usize) -> Vec<(VerifyingKey, Vec
     }
 
     res
+}
+
+use bitcoin::{secp256k1::Secp256k1, Address, Network, PrivateKey, PublicKey};
+
+/// Generate a (priv-key, pub-key, address) tuple for the chosen Bitcoin network.
+pub fn generate_key_material(network: Network) -> (PrivateKey, PublicKey, Address) {
+    let secp = Secp256k1::new();
+    let (secret_key, secp_pub_key) = secp.generate_keypair(&mut OsRng);
+
+    let priv_key = PrivateKey::new(secret_key, network);
+    let pub_key = PublicKey::new(secp_pub_key);
+    let address = Address::p2pkh(&pub_key, network);
+
+    (priv_key, pub_key, address)
+}
+
+pub fn key_and_address_as_bytes(priv_key: &PrivateKey, addr: &Address) -> ([u8; 32], Vec<u8>) {
+    let raw_secret: [u8; 32] = {
+        let secret: &SecretKey = &priv_key.inner;
+        secret.secret_bytes()
+    };
+    let addr_bytes: Vec<u8> = addr.to_string().into_bytes();
+
+    (raw_secret, addr_bytes)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    use bitcoin::{secp256k1, secp256k1::SecretKey, Address, Network, PrivateKey};
+    use std::str::{from_utf8, FromStr};
+
+    #[test]
+    fn generates_consistent_key_material() {
+        let (priv_key, pub_key, addr) = generate_key_material(Network::Testnet);
+        let secp = Secp256k1::new();
+        assert_eq!(pub_key, priv_key.public_key(&secp));
+
+        let expected_addr = Address::p2pkh(&pub_key, Network::Testnet);
+        assert_eq!(addr, expected_addr);
+
+        let wif = priv_key.to_wif();
+        let decoded = bitcoin::PrivateKey::from_wif(&wif).expect("decode WIF");
+        assert_eq!(decoded, priv_key);
+    }
 }
