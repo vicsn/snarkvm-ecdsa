@@ -228,11 +228,15 @@ impl Eject for ECDSASignature {
 pub fn verify_one(_public_key: ECDSAPublicKey, _signature: ECDSASignature, msg: Message, compile_mode: bool) {
     // Instantiate the sha2_256 hash function and hash the message.
     let sha2 = Sha2_256::new();
-    let hash_bits = sha2.hash(&msg);
+    let intermediate_bits = sha2.hash(&msg);
+    let bits = sha2.hash(&intermediate_bits);
 
     // Get the hash as a BigUint so the emulated field can be created from all 256 bytes
     // (SnarkVM fields would truncate the hash).
-    let (mode, z) = Message { bits: hash_bits }.eject();
+    let (mode, z) = Message { bits }.eject();
+    println!("z: {:?}", z);
+
+
     let hash = BigUint::from_bytes_be(z.as_slice());
 
     // Create the emulated Fr field element from the hash.

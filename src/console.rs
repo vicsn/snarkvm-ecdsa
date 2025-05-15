@@ -50,8 +50,12 @@ pub fn sample_pubkey_sig(msg: &[u8]) -> (ECDSAPublicKey, ECDSASignature) {
     let secret_key = k256::ecdsa::SigningKey::random(rng);
     let public_key = secret_key.verifying_key().clone();
 
+    let mut hasher = crate::double_sha256::DoubleSha256::new();
+    hasher.update(&msg);
+    println!("console hash {:?}", hasher.finalize());
+
     // hash bytes
-    let mut hasher = sha3::Keccak256::new();
+    let mut hasher = crate::double_sha256::DoubleSha256::new();
     hasher.update(&msg);
 
     // sign

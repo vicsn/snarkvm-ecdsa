@@ -8,6 +8,7 @@ use sha2::Sha256; // Digest trait comes from sha2’s re-export
 #[derive(Clone, Default)]
 pub struct DoubleSha256 {
     inner: Sha256, // first-round engine
+    data: Vec<u8>, // data buffer
 }
 
 impl OutputSizeUser for DoubleSha256 {
@@ -23,22 +24,22 @@ impl Digest for DoubleSha256 {
     /// Stream data into the *first* SHA-256 round.
     #[inline(always)]
     fn update(&mut self, data: impl AsRef<[u8]>) {
-        self.inner.update(data);
+        self.data = data.as_ref().to_vec();
     }
 
     /// `SHA256(SHA256(data))`
     #[inline(always)]
     fn finalize(self) -> GenericArray<u8, Self::OutputSize> {
-        let first = self.inner.finalize(); // SHA256(data)
-        Sha256::digest(first) // SHA256(SHA256(data))
+        Sha256::digest(Sha256::digest(&self.data)) // SHA256(SHA256(data))
     }
 
     /// Same as `finalize`, but leave the hasher ready for new input.
     #[inline(always)]
     fn finalize_reset(&mut self) -> GenericArray<u8, Self::OutputSize> {
         // `finalize_reset` clears `inner` for us, so we can re-use it.
-        let first = self.inner.finalize_reset();
-        Sha256::digest(first)
+        let data = Sha256::digest(Sha256::digest(&self.data));
+        self.data.clear(); // clear the data buffer
+        data
     }
 
     /// Clear internal state.
